@@ -57,5 +57,5 @@ jobs:
         - name: Edit Instance Group with new Instance Template
           run: gcloud compute instance-groups managed set-instance-template instance-group-1 --zone=europe-west4-a --template=instance-template-${{ github.sha }}
           
-        - name: Recreate Instances
-          run: gcloud compute --project "${{ secrets.GCR_DEV_PROJECT_ID }}" instance-groups managed recreate-instances "instance-group-1" --zone "europe-west4-a" --instances "instance-group-1-6k84"
+        #- name: Recreate Instances
+        #  run: gcloud compute --project "${{ secrets.GCR_DEV_PROJECT_ID }}" instance-groups managed recreate-instances "instance-group-1" --zone "europe-west4-a" --instances "instance-group-1-6k84"
