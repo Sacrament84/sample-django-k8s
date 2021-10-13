@@ -51,11 +51,10 @@ jobs:
           run: docker push $IMAGE_NAME
 
         - name: Create New Instance Template
-          run: gcloud compute instance-templates create-with-container instance-template-${{ github.sha }} --tags=http-server --container-env=[DATABASE_URL=mysql://djangouser:910288@cloud-run-dev-328005:europe-west4:mtsql-django-dev/django_dev] --container-image=gcr.io/cloud-run-dev-328005/cloud-run-dev/v${{ github.sha }}:latest
+          run: gcloud compute instance-templates create-with-container instance-template-${{ github.sha }} --tags=http-server --container-env=DATABASE_URL=mysql://djangouser:910288@cloud-run-dev-328005:europe-west4:mtsql-django-dev/django_dev --container-image=gcr.io/cloud-run-dev-328005/cloud-run-dev/v${{ github.sha }}:latest
         
         - name: Edit Instance Group with new Instance Template
           run: gcloud compute instance-groups managed set-instance-template instance-group-1 --zone=europe-west4-a --template=instance-template-${{ github.sha }}
           
         - name: Recreate Instances
           run: gcloud compute --project "${{ secrets.GCR_DEV_PROJECT_ID }}" instance-groups managed recreate-instances  "instance-group-1" --zone "europe-west4-a" --instances "instance-group-1-fb9k"
-          
