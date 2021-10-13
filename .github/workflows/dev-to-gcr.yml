@@ -31,15 +31,15 @@ jobs:
 
         - name: Checkout repository
           uses: actions/checkout@v2
-          
+        
+        - name: Install Mysql Python Client
+          run: apt-get update && apt-get install -y python3-mysqldb 
+
         - name: Install req
           run: pip install -r requirements.txt
 
-        - name: Sync DB 
-          run: python manage.py syncdb --database $DATABASE_URL
-
         - name: Migrate
-          run: python manage.py migrate --noinput 
+          run: python manage.py migrate
         
         - name: Run Test
           run: python manage.py test
