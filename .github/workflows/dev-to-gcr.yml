@@ -13,7 +13,7 @@ jobs:
         env:
 
           IMAGE_NAME: gcr.io/${{ secrets.GCR_DEV_PROJECT_ID }}/${{ secrets.GCR_DEV_APP_NAME }}-ver-${{ github.sha }}
-          DEVELOPMENT_MODE: True
+          DEVELOPMENT_MODE: "True"
         steps:
 
         - name: Check Out Repo 
