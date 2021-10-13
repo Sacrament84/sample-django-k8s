@@ -5,6 +5,5 @@ ENV TZ=Asia/Bishkek
 WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
-RUN apt-update && apt-get install -y python3-mysqldb
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
