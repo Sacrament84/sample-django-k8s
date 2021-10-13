@@ -1,0 +1,50 @@
+name: Build and push to GCR Staging branch
+
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+
+    deploy:
+    
+        name: Setup Gcloud Account
+        runs-on: ubuntu-latest
+        env:
+
+          IMAGE_NAME: gcr.io/${{ secrets.GCR_DEV_PROJECT_ID }}/${{ secrets.GCR_DEV_APP_NAME }}-ver-${{ github.sha }}
+        steps:
+
+        - name: Check Out Repo 
+          uses: actions/checkout@v2
+        
+        - name: Login
+          uses: google-github-actions/setup-gcloud@master
+          with:
+            project_id: ${{ secrets.GCR_DEV_PROJECT_ID }}
+            service_account_email: ${{ secrets.GCR_DEV_SERVICE_NAME }}
+            service_account_key: ${{ secrets.GCR_DEV_KEY }}
+
+        - name: Configure Docker
+          run: gcloud auth configure-docker --quiet
+
+        - name: Checkout repository
+          uses: actions/checkout@v2
+          
+        - name: Install req
+          run: pip install -r requirements.txt
+
+        - name: Sync DB 
+          run: python manage.py syncdb --noinput
+
+        - name: Migrate
+          run: python manage.py migrate --noinput 
+        
+        - name: Run Test
+          run: manage.py test
+          
+        #- name: Build Docker image
+        #  run: docker build . -t $IMAGE_NAME
+
+        #- name: Push Docker image
+        #  run: docker push $IMAGE_NAME
