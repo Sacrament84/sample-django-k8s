@@ -13,8 +13,7 @@ jobs:
         env:
 
           IMAGE_NAME: gcr.io/${{ secrets.GCR_DEV_PROJECT_ID }}/${{ secrets.GCR_DEV_APP_NAME }}-ver-${{ github.sha }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DEVELOPMENT_MODE: True       
+          DEVELOPMENT_MODE: True
         steps:
 
         - name: Check Out Repo 
@@ -33,8 +32,8 @@ jobs:
         - name: Checkout repository
           uses: actions/checkout@v2
         
-        - name: Install Mysql Python Client
-          run: sudo apt-get update && sudo apt-get install -y python3-mysqldb 
+        #- name: Install Mysql Python Client
+        #  run: sudo apt-get update && sudo apt-get install -y python3-mysqldb 
 
         - name: Install req
           run: pip install -r requirements.txt
