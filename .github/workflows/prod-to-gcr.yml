@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
 
-          IMAGE_NAME: gcr.io/cloud-run-327804/cloud-run-project/v${{ github.run_number }}
+          IMAGE_NAME: gcr.io/cloud-run-project-327804/cloud-run-project/v${{ github.run_number }}
         steps:
 
         - name: Check Out Repo 
@@ -41,7 +41,7 @@ jobs:
           run: docker push $IMAGE_NAME
 
         - name: Create New Instance Template
-          run: gcloud compute instance-templates create-with-container instance-template-${{ github.run_number }} --tags=http-server --container-env=DATABASE_URL=${{ secrets.PROD_DB_URL }} --container-image=gcr.io/cloud-run-327804/cloud-run-project/v${{ github.run_number }}:latest
+          run: gcloud compute instance-templates create-with-container instance-template-${{ github.run_number }} --tags=http-server --container-env=DATABASE_URL=${{ secrets.PROD_DB_URL }} --container-image=gcr.io/cloud-run-project-327804/cloud-run-project/v${{ github.run_number }}:latest
         
         - name: Edit Instance Group with new Instance Template
           run: gcloud compute instance-groups managed set-instance-template instance-group-2 --zone=europe-west4-a --template=instance-template-$${{ github.run_number }}
