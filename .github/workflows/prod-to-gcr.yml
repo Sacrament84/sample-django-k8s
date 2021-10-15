@@ -13,7 +13,6 @@ jobs:
         env:
 
           IMAGE_NAME: gcr.io/cloud-run-327804/cloud-run/v${{ github.run_number }}
-          DATABASE_URL: ${{ secrets.PROD_DB_URL }}
         steps:
 
         - name: Check Out Repo 
@@ -31,15 +30,9 @@ jobs:
 
         - name: Checkout repository
           uses: actions/checkout@v2
-        
-        #- name: Install Mysql Python Client
-        #  run: sudo apt-get update && sudo apt-get install -y python3-mysqldb 
 
         - name: Install req
           run: pip install -r requirements.txt
-
-        - name: Migrate
-          run: python manage.py migrate
           
         - name: Build Docker image
           run: docker build . -t $IMAGE_NAME
