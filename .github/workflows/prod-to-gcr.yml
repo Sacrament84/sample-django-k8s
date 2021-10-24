@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
 
-          IMAGE_NAME: gcr.io/cloud-run-project-327804/cloud-run-project/v${{ github.run_number }}
+          IMAGE_NAME: gcr.io/kubernetes-329812/kubernetes/v${{ github.run_number }}
         steps:
 
         - name: Check Out Repo 
