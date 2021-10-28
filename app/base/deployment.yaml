@@ -3,7 +3,7 @@ kind : Deployment
 metadata:
   name: sample-django
   labels:
-    app : sample-django
+    name : sample-django
     owner : Voloshin_Nikolai
 spec:
   selector:
