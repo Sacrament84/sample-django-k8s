@@ -21,12 +21,16 @@ jobs:
         - name: Check Out Repo 
           uses: actions/checkout@v2
         
-        - name: Login
+        - name: Login to Google
           uses: google-github-actions/setup-gcloud@master
           with:
             project_id: ${{ secrets.GCR_PROJECT_ID }}
             service_account_email: ${{ secrets.GCR_SERVICE_NAME }}
             service_account_key: ${{ secrets.GCR_KEY }}
+
+        - name: Get GKE Credentials
+          run: |-
+            gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
 
         - name: Configure Docker
           run: gcloud auth configure-docker --quiet
@@ -45,6 +49,9 @@ jobs:
 
         - name: Put image name to kustomization
           run: sed -ie "s/:latest/:${{ github.run_number }}/g" app/base/deployment.yaml
+
+        - name: show image
+          run: echo app/base/deployment.yaml | grep image
 
         - name: Deploy
           run: |-
