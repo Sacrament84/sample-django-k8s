@@ -13,6 +13,7 @@ spec:
     metadata:
       labels:
         name: sample-django
+        project: sample-django
     spec:
       containers:
         - name : sample-django
