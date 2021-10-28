@@ -1,8 +1,9 @@
 resources:
+  - ingress.yaml
   - deployment.yaml
   - service.yaml
   - hpa.yaml
   - namespace-prod.yaml
-  - ingress.yaml
+  - namespace-dev.yaml
 commonLabels:
   owner: Voloshin_Nikolai
