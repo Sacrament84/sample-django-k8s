@@ -37,7 +37,7 @@ jobs:
           run: pip install -r requirements.txt
           
         - name: Build Docker image
-          run: docker build . --tag "gcr.io/$PROJECT_ID/$IMAGE:${{ github.run_number }}"
+          run: docker build . -t "gcr.io/$PROJECT_ID/$IMAGE:${{ github.run_number }}"
 
         - name: Push Docker image
           run: docker push "gcr.io/$PROJECT_ID/$IMAGE:${{ github.run_number }}"
