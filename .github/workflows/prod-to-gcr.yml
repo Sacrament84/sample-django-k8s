@@ -11,8 +11,10 @@ jobs:
         name: Setup Gcloud Account
         runs-on: ubuntu-latest
         env:
-
-          IMAGE_NAME: gcr.io/kubernetes-329812/kubernetes/v${{ github.run_number }}
+          IMAGE: sample-django
+          DEPLOYMENT_NAME: prod
+          GKE_ZONE: europe-west1-b
+          GKE_CLUSTER: sacrament-k8s
         steps:
 
         - name: Check Out Repo 
@@ -21,7 +23,7 @@ jobs:
         - name: Login
           uses: google-github-actions/setup-gcloud@master
           with:
-            project_id: ${{ secrets.GCR_PROJECT_ID }}
+            PROJECT_ID: ${{ secrets.GCR_PROJECT_ID }}
             service_account_email: ${{ secrets.GCR_SERVICE_NAME }}
             service_account_key: ${{ secrets.GCR_KEY }}
 
@@ -35,8 +37,9 @@ jobs:
           run: pip install -r requirements.txt
           
         - name: Build Docker image
-          run: docker build . -t $IMAGE_NAME
+          run: docker build \
+               --tag "gcr.io/$PROJECT_ID/$IMAGE:${{ github.run_number }}" \
+               .
 
         - name: Push Docker image
-          run: docker push $IMAGE_NAME
-
+          run: docker push "gcr.io/$PROJECT_ID/$IMAGE:${{ github.run_number }}"
