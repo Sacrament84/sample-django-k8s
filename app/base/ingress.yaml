@@ -1,19 +1,29 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-sample-django
-
+  name: sample-django-ingress
+  annotations:
 spec:
+  ingressClassName: nginx
   rules:
   - host: django.homeline.kg
     http:
       paths:
-        - backend:
-           serviceName: prod-sample-django
-           servicePort: 8000
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: prod-sample-django
+            port:
+              number: 8000
+
    - host: django-dev.homeline.kg
     http:
       paths:
-        - backend:
-           serviceName: dev-sample-django
-           servicePort: 8000
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: dev-sample-django
+            port:
+              number: 8000
