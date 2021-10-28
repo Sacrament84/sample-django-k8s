@@ -3,12 +3,12 @@ kind : Deployment
 metadata:
   name: sample-django
   labels:
-    name : sample-django
+    project: sample-django
     owner : Voloshin_Nikolai
 spec:
   selector:
     matchLabels:
-      name: sample-django
+      project: sample-django
   template:
     metadata:
       labels:
