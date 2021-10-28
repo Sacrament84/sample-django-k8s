@@ -53,5 +53,5 @@ jobs:
         - name: Deploy
           run: |-
              kubectl apply -k app/overlays/prod/
-             kubectl rollout status deployment/$DEPLOYMENT_NAME
+             kubectl rollout status deployment/$DEPLOYMENT_NAME -n namespace-prod
              kubectl get services -o wide
