@@ -8,11 +8,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      project: sample-django
+      name: sample-django
   template:
     metadata:
       labels:
-        project: sample-django
+        name: sample-django
     spec:
       containers:
         - name : sample-django
