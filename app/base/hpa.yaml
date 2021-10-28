@@ -1,0 +1,19 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sample-django
+  labels:
+    name : sample-django
+    owner : Voloshin_Nikolai
+spec:
+    scaleTargetRef:
+      apiVersion: apps/v2beta1
+      kind: Deployment
+      name: sample-django
+    minReplicas: 2
+    maxReplicas: 8
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50
