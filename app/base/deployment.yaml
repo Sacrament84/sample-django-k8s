@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name : sample-django
-          image: latest
+          image: gcr.io/kubernetes-329812/sample-django:latest
           ports:
             - containerPort: 8000
           resources:

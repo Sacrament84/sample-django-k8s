@@ -44,7 +44,7 @@ jobs:
           run: docker push "gcr.io/$project_id/$IMAGE:${{ github.run_number }}"
 
         - name: Put image name to kustomization
-          run: sed -i 's/image: latest/gcr.io\/$project_id\/$IMAGE:${{ github.run_number }}/g' app/base/deployment.yaml
+          run: sed -ie "s/:latest/:$image_tag/g" app/base/deployment.yaml
 
         - name: Deploy
           run: |-
