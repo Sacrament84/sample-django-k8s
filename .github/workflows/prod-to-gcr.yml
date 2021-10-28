@@ -50,9 +50,6 @@ jobs:
         - name: Put image name to kustomization
           run: sed -ie "s/:latest/:${{ github.run_number }}/g" app/base/deployment.yaml
 
-        - name: show image
-          run: echo app/base/deployment.yaml | grep image
-
         - name: Deploy
           run: |-
              kubectl apply -k app/overlays/prod/
