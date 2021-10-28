@@ -12,7 +12,7 @@ jobs:
         runs-on: ubuntu-latest
         env:
           IMAGE: sample-django
-          DEPLOYMENT_NAME: prod
+          DEPLOYMENT_NAME: sample-django
           GKE_ZONE: europe-west1-b
           GKE_CLUSTER: sacrament-k8s
           project_id: ${{ secrets.GCR_PROJECT_ID }}
@@ -42,3 +42,12 @@ jobs:
 
         - name: Push Docker image
           run: docker push "gcr.io/$project_id/$IMAGE:${{ github.run_number }}"
+
+        - name: Put image name to kustomization
+          run: sed -i 's/image: latest/gcr.io\/$project_id\/$IMAGE:${{ github.run_number }}/g' app/base/deployment.yaml
+
+        - name: Deploy
+          run: |-
+             kubectl apply -f app/overlays/prod/
+             kubectl rollout status deployment/$DEPLOYMENT_NAME
+             kubectl get services -o wide
