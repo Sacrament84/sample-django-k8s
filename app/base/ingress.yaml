@@ -17,7 +17,7 @@ spec:
             port:
               number: 8000
 
-   - host: django-dev.homeline.kg
+  - host: django-dev.homeline.kg
     http:
       paths:
       - pathType: Prefix
