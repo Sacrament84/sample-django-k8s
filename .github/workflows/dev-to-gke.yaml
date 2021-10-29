@@ -45,7 +45,7 @@ jobs:
           run: docker push "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
 
         - name: Put image name to kustomization
-          run: sed -ie "s/:latest/:${{ github.sha }}/g" app/base/deployment.yaml
+          run: sed -ie "s/sample-django:latest/dev-sample-django:${{ github.sha }}/g" app/base/deployment.yaml
 
         - name: Deploy
           run: |-
