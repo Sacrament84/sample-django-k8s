@@ -1,5 +1,5 @@
 resources:
-  - ingress.yaml
+#  - ingress.yaml
   - deployment.yaml
   - service.yaml
   - hpa.yaml
