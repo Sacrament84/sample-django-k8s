@@ -1,0 +1,57 @@
+name: Build and push to GKE Staging branch
+
+on:
+  push:
+    branches: [ staging ]
+
+jobs:
+
+    deploy:
+    
+        name: Setup Gcloud Account
+        runs-on: ubuntu-latest
+        env:
+          IMAGE: dev-sample-django
+          DEPLOYMENT_NAME: dev-sample-django
+          GKE_ZONE: europe-west1-b
+          GKE_CLUSTER: sacrament-k8s
+          project_id: ${{ secrets.GCR_PROJECT_ID }}
+        steps:
+
+        - name: Check Out Repo 
+          uses: actions/checkout@v2
+        
+        - name: Login to Google
+          uses: google-github-actions/setup-gcloud@master
+          with:
+            project_id: ${{ secrets.GCR_PROJECT_ID }}
+            service_account_email: ${{ secrets.GCR_SERVICE_NAME }}
+            service_account_key: ${{ secrets.GCR_KEY }}
+
+        - name: Get GKE Credentials
+          run: |-
+            gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+
+        - name: Configure Docker
+          run: gcloud auth configure-docker --quiet
+
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Install req
+          run: pip install -r requirements.txt
+          
+        - name: Build Docker image
+          run: docker build . -t "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
+
+        - name: Push Docker image
+          run: docker push "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
+
+        - name: Put image name to kustomization
+          run: sed -ie "s/:latest/:${{ github.sha }}/g" app/base/deployment.yaml
+
+        - name: Deploy
+          run: |-
+             kubectl apply -k app/overlays/dev/
+             kubectl rollout status deployment/$DEPLOYMENT_NAME -n dev-namespace
+             kubectl get services -o wide -n dev-namespace

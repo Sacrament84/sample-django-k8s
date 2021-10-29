@@ -3,6 +3,5 @@ resources:
   - deployment.yaml
   - service.yaml
   - hpa.yaml
-  - namespace-prod.yaml
 commonLabels:
   owner: Voloshin_Nikolai
