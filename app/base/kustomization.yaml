@@ -1,6 +1,4 @@
 resources:
-  - dev-ingress.yaml
-  - prod-ingress.yaml
   - deployment.yaml
   - service.yaml
   - hpa.yaml
