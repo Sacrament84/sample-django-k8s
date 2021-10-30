@@ -1,4 +1,5 @@
 bases:
   - ../../base/
+  - prod-ingress.yaml
 namePrefix: prod-
 namespace: prod-namespace
