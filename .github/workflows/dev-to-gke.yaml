@@ -28,6 +28,7 @@ jobs:
         
         - name: TEST COBECONFIG 
           run: mkdir -p '${{ github.workspace }}/.kube' 
+          
         - name: echo
           run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > /tmp/kubeconfig
 
