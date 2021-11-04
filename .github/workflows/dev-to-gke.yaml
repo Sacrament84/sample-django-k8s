@@ -29,10 +29,10 @@ jobs:
         - name: TEST COBECONFIG 
           run: mkdir -p '${{ github.workspace }}/.kube' 
         - name: echo
-          run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > $POD_KUBECONFIG
+          run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > /tmp/kubeconfig
 
         - name: PRINT TEST INFO  
-          run: 'kubectl version --kubeconfig $POD_KUBECONFIG'
+          run: 'kubectl version --kubeconfig /tmp/cubeconfig'
 
         #- name: Get GKE Credentials
         #  run: |-
