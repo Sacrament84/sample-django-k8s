@@ -32,7 +32,7 @@ jobs:
           run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > /tmp/kubeconfig
 
         - name: PRINT TEST INFO  
-          run: 'kubectl version --kubeconfig /tmp/cubeconfig'
+          run: 'kubectl version --kubeconfig /tmp/kubeconfig'
 
         #- name: Get GKE Credentials
         #  run: |-
