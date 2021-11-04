@@ -26,39 +26,36 @@ jobs:
             service_account_email: ${{ secrets.GCR_SERVICE_NAME }}
             service_account_key: ${{ secrets.GCR_KEY }}
         
-        - name: TEST COBECONFIG 
-          run: mkdir -p '${{ github.workspace }}/.kube' 
-          
-        - name: echo
-          run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > /tmp/kubeconfig
+        #- name: mkdir
+        #  run: mkdir -p '${{ github.workspace }}/.kube' 
 
-        - name: PRINT TEST INFO  
-          run: 'kubectl version --kubeconfig /tmp/kubeconfig'
+        - name: Create Kubeconfig with serviceaccount
+          run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > /tmp/kubeconfig
 
         #- name: Get GKE Credentials
         #  run: |-
         #    gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
 
-        #- name: Configure Docker
-        #  run: gcloud auth configure-docker --quiet
+        - name: Configure Docker
+          run: gcloud auth configure-docker --quiet
 
-        #- name: Checkout repository
-        #  uses: actions/checkout@v2
+        - name: Checkout repository
+          uses: actions/checkout@v2
 
-        #- name: Install req
-        #  run: pip install -r requirements.txt
+        - name: Install req
+          run: pip install -r requirements.txt
           
-        #- name: Build Docker image
-        #  run: docker build . -t "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
+        - name: Build Docker image
+          run: docker build . -t "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
 
-        #- name: Push Docker image
-        #  run: docker push "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
+        - name: Push Docker image
+          run: docker push "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
 
-        #- name: Put image name to kustomization
-        #  run: sed -ie "s/sample-django:latest/dev-sample-django:${{ github.sha }}/g" app/base/deployment.yaml
+        - name: Put image name to kustomization
+          run: sed -ie "s/sample-django:latest/dev-sample-django:${{ github.sha }}/g" app/base/deployment.yaml
 
-        #- name: Deploy
-        #  run: |-
-        #     kubectl apply -k app/overlays/dev/
-        #     kubectl rollout status deployment/$DEPLOYMENT_NAME -n dev-namespace
-        #     kubectl get services -o wide -n dev-namespace
+        - name: Deploy
+          run: |-
+             kubectl apply -k app/overlays/dev/ --kubeconfig /tmp/kubeconfig
+             kubectl rollout status deployment/$DEPLOYMENT_NAME -n dev-namespace --kubeconfig /tmp/kubeconfig
+             kubectl get services -o wide -n dev-namespace --kubeconfig /tmp/kubeconfig
