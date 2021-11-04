@@ -25,9 +25,6 @@ jobs:
             project_id: ${{ secrets.GCR_PROJECT_ID }}
             service_account_email: ${{ secrets.GCR_SERVICE_NAME }}
             service_account_key: ${{ secrets.GCR_KEY }}
-        
-        #- name: mkdir
-        #  run: mkdir -p '${{ github.workspace }}/.kube' 
 
         - name: Create Kubeconfig with serviceaccount
           run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > /tmp/kubeconfig
