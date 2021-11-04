@@ -28,6 +28,7 @@ jobs:
 
         - name: Create Kubeconfig with serviceaccount
           run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > /tmp/kubeconfig
+          
 
         #- name: Get GKE Credentials
         #  run: |-
