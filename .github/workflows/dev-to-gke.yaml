@@ -27,7 +27,7 @@ jobs:
         
         - name: TEST COBECONFIG 
           run: |
-           mkdir -p '${{ github.workspace }}/.kube' && echo '${{ secrets.K8S_CONFIG}}' | base64 -d > $POD_KUBECONFIG
+           mkdir -p '${{ github.workspace }}/.kube' && echo '${{ secrets.K8S_CONFIG }}' | base64 -d > $POD_KUBECONFIG
 
         - name: PRINT TEST INFO  
           run: 'kubectl version --kubeconfig $POD_KUBECONFIG'
