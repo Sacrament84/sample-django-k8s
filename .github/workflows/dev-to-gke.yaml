@@ -26,8 +26,9 @@ jobs:
             service_account_key: ${{ secrets.GCR_KEY }}
         
         - name: TEST COBECONFIG 
-          run: |
-           mkdir -p '${{ github.workspace }}/.kube' && echo '${{ secrets.K8S_CONFIG }}' | base64 -d > $POD_KUBECONFIG
+          run: mkdir -p '${{ github.workspace }}/.kube' 
+        - name: echo
+          run: echo '${{ secrets.K8S_CONFIG }}' | base64 -d > $POD_KUBECONFIG
 
         - name: PRINT TEST INFO  
           run: 'kubectl version --kubeconfig $POD_KUBECONFIG'
