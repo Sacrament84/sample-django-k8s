@@ -24,31 +24,38 @@ jobs:
             project_id: ${{ secrets.GCR_PROJECT_ID }}
             service_account_email: ${{ secrets.GCR_SERVICE_NAME }}
             service_account_key: ${{ secrets.GCR_KEY }}
+        
+        - name: TEST COBECONFIG 
+          run: |
+           mkdir -p '${{ github.workspace }}/.kube' && echo '${{ secrets.K8S_CONFIG}}' | base64 -d > $POD_KUBECONFIG
 
-        - name: Get GKE Credentials
-          run: |-
-            gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+        - name: PRINT TEST INFO  
+          run: 'kubectl version --kubeconfig $POD_KUBECONFIG'
 
-        - name: Configure Docker
-          run: gcloud auth configure-docker --quiet
+        #- name: Get GKE Credentials
+        #  run: |-
+        #    gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
 
-        - name: Checkout repository
-          uses: actions/checkout@v2
+        #- name: Configure Docker
+        #  run: gcloud auth configure-docker --quiet
 
-        - name: Install req
-          run: pip install -r requirements.txt
+        #- name: Checkout repository
+        #  uses: actions/checkout@v2
+
+        #- name: Install req
+        #  run: pip install -r requirements.txt
           
-        - name: Build Docker image
-          run: docker build . -t "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
+        #- name: Build Docker image
+        #  run: docker build . -t "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
 
-        - name: Push Docker image
-          run: docker push "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
+        #- name: Push Docker image
+        #  run: docker push "gcr.io/$project_id/$IMAGE:${{ github.sha }}"
 
-        - name: Put image name to kustomization
-          run: sed -ie "s/sample-django:latest/dev-sample-django:${{ github.sha }}/g" app/base/deployment.yaml
+        #- name: Put image name to kustomization
+        #  run: sed -ie "s/sample-django:latest/dev-sample-django:${{ github.sha }}/g" app/base/deployment.yaml
 
-        - name: Deploy
-          run: |-
-             kubectl apply -k app/overlays/dev/
-             kubectl rollout status deployment/$DEPLOYMENT_NAME -n dev-namespace
-             kubectl get services -o wide -n dev-namespace
+        #- name: Deploy
+        #  run: |-
+        #     kubectl apply -k app/overlays/dev/
+        #     kubectl rollout status deployment/$DEPLOYMENT_NAME -n dev-namespace
+        #     kubectl get services -o wide -n dev-namespace
